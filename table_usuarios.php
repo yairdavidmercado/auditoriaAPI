@@ -13,34 +13,18 @@ $perfil = isset($_GET['perfil']) ? $_GET['perfil']: 3;
 $limit = 10;
 $page = isset($_GET['page']) ? $_GET['page']: 1;
 $start = ($page -1) * $limit;
-$admision = isset($_GET['admision']) ? $_GET['admision']: '';
-
+$nombre = isset($_GET['nombre']) ? $_GET['nombre']: '';
 $table = <<<EOT
  (
-    SELECT cod_audi,
-    cod_admi,
-    (SELECT nombre FROM wusuarios WHERE cod_usua = wauditorias.cod_usua limit 1 ) as nom_usua,
-    eps,
-    servicio,
-    cama,
-    to_char(fechacrea, 'YYYY-MM-DD HH24:MM') as fechacrea, 
-    (SELECT to_char(MAX(fechacrea), 'YYYY-MM-DD HH24:MM') FROM wrespuestas WHERE wrespuestas.cod_audi = wauditorias.cod_audi AND wauditorias.terminado = true ) as fecha_final,
-        (SELECT count(*) FROM
-        (SELECT *
-        FROM wauditorias 
-        WHERE perfil = $perfil
-        AND anulado = false 
-        AND terminado = true
-        AND consec IN (SELECT MAX(consec) FROM wauditorias WHERE anulado = false AND terminado = true GROUP BY cod_admi) 
-        AND cod_admi::text LIKE '%$admision%'
-        ORDER BY consec DESC) as tabla) as totalrows 
-    FROM wauditorias 
-    WHERE perfil = $perfil
-    AND anulado = false
-    AND terminado = true 
-    AND consec IN (SELECT MAX(consec) FROM wauditorias WHERE perfil = $perfil and anulado = false AND terminado = true GROUP BY cod_admi) 
-    AND cod_admi::text LIKE '%$admision%'
-    ORDER BY consec DESC OFFSET $start limit $limit
+    SELECT cod_usua, 
+    nombre,
+    fechacrea,
+    (SELECT count(id) FROM wusuarios
+    WHERE nombre LIKE '%$nombre%') AS totalrows
+    FROM wusuarios
+    WHERE nombre LIKE '%$nombre%'
+    ORDER BY cod_usua DESC 
+    OFFSET $start limit $limit
  ) temp
 EOT;
  
@@ -53,7 +37,7 @@ $primaryKey = '1';
 // indexes
 $columns = array(
     array(
-        'db' => 'cod_admi',
+        'db' => 'cod_usua',
         'dt' => 'DT_RowId',
         'formatter' => function( $d, $row ) {
             // Technically a DOM id cannot start with an integer, so we prefix
@@ -62,14 +46,9 @@ $columns = array(
             return 'row_'.$d;
         }
     ),
-    array( 'db' => 'cod_audi',  'dt' => 'cod_audi' ),
-    array( 'db' => 'cod_admi',  'dt' => 'cod_admi' ),      
-    array( 'db' => 'nom_usua',   'dt' => 'nom_usua' ),
-    array( 'db' => 'eps',     'dt' => 'eps' ),
-    array( 'db' => 'servicio',     'dt' => 'servicio' ),
-    array( 'db' => 'cama',     'dt' => 'cama' ),
+    array( 'db' => 'cod_usua',  'dt' => 'cod_usua' ),
+    array( 'db' => 'nombre',  'dt' => 'nombre' ),      
     array( 'db' => 'fechacrea',     'dt' => 'fechacrea' ),
-    array( 'db' => 'fecha_final',     'dt' => 'fecha_final' ),
     array( 'db' => 'totalrows',     'dt' => 'totalrows' )
 );
  

@@ -15,7 +15,8 @@ error_reporting(0);
                 $value11        = $data["value11"]; 
                 $type11         = $data["type11"]; 
                 $ranking1       = $data["ranking1"]; 
-                $perfil1        = $data["perfil1"]; 
+                $perfil1        = $data["perfil1"];
+                $id_componente1 = $data["id_componente1"]; 
 
 
                 //parametros de conexion a la base de datos del cliente
@@ -24,7 +25,7 @@ error_reporting(0);
                 $dependencia = '';
 				if ($conn) {
                     if ($codigo == '1') {// CARD COMPLETO
-                        $result = pg_query($conn, "SELECT wcrear_control('1', 'div', 'card', '$dependencia1', '', '', '$ranking1', '$perfil1')");
+                        $result = pg_query($conn, "SELECT wcrear_sub_control('1', 'div', 'card', '$dependencia1', '', '', '$ranking1', '$perfil1', '$id_componente1')");
 						if(pg_num_rows($result) > 0)
 						{	
                             $response["resultado"] = array();
@@ -37,9 +38,9 @@ error_reporting(0);
                             $response["success"] = true;
                             $response["message"] = "Existen registros.";
                             //echo json_encode($response);
-                            $dependencia = $response["resultado"][0]["wcrear_control"];
+                            $dependencia = $response["resultado"][0]["wcrear_sub_control"];
                             $dependencia1 = '';
-                            $result1 = pg_query($conn, "SELECT wcrear_control('1', 'div', 'card-header', '$dependencia', '', '', '1', '$perfil1')");
+                            $result1 = pg_query($conn, "SELECT wcrear_sub_control('1', 'div', 'card-header', '$dependencia', '', '', '1', '$perfil1', '$id_componente1')");
                             if(pg_num_rows($result1) > 0)
                             {	
                                 $response["resultado"] = array();
@@ -51,8 +52,8 @@ error_reporting(0);
                                 }
                                 $response["success"] = true;
                                 $response["message"] = "Existen registros.";
-                                $dependencia1 = $response["resultado"][0]["wcrear_control"];
-                                $result1 = pg_query($conn, "SELECT wcrear_control('1', 'h3', 'card-title', '$dependencia1', 'PREGUNTAS', '', '1', '$perfil1')");
+                                $dependencia1 = $response["resultado"][0]["wcrear_sub_control"];
+                                $result1 = pg_query($conn, "SELECT wcrear_sub_control('1', 'h3', 'card-title', '$dependencia1', 'PREGUNTAS', '', '1', '$perfil1', '$id_componente1')");
                                 if(pg_num_rows($result1) > 0)
                                 {	
                                     $response["resultado"] = array();
@@ -64,8 +65,8 @@ error_reporting(0);
                                     }
                                     $response["success"] = true;
                                     $response["message"] = "Existen registros.";
-                                    $dependencia1 = $response["resultado"][0]["wcrear_control"];
-                                    $result1 = pg_query($conn, "SELECT wcrear_control('1', 'div', 'card-body', '$dependencia', '', '', '2', '$perfil1')");
+                                    $dependencia1 = $response["resultado"][0]["wcrear_sub_control"];
+                                    $result1 = pg_query($conn, "SELECT wcrear_sub_control('1', 'div', 'card-body', '$dependencia', '', '', '2', '$perfil1', '$id_componente1')");
                                     if(pg_num_rows($result1) > 0)
                                     {	
                                         $response["resultado"] = array();
@@ -77,8 +78,8 @@ error_reporting(0);
                                         }
                                         $response["success"] = true;
                                         $response["message"] = "Existen registros.";
-                                        $dependencia1 = $response["resultado"][0]["wcrear_control"];
-                                        $result1 = pg_query($conn, "SELECT wcrear_control('1', 'div', 'row', '$dependencia1', '', '', '1', '$perfil1')");
+                                        $dependencia1 = $response["resultado"][0]["wcrear_sub_control"];
+                                        $result1 = pg_query($conn, "SELECT wcrear_sub_control('1', 'div', 'row', '$dependencia1', '', '', '1', '$perfil1', '$id_componente1')");
                                         if(pg_num_rows($result1) > 0)
                                         {	
                                             $response["resultado"] = array();
@@ -90,9 +91,9 @@ error_reporting(0);
                                             }
                                             $response["success"] = true;
                                             $response["message"] = "Existen registros.";
-                                            $dependencia1 = $response["resultado"][0]["wcrear_control"];
+                                            $dependencia1 = $response["resultado"][0]["wcrear_sub_control"];
                                             $dependencia2 = '';
-                                            $result1 = pg_query($conn, "SELECT wcrear_control('1', 'div', 'col-sm-12', '$dependencia1', '', '', '1', '$perfil1')");
+                                            $result1 = pg_query($conn, "SELECT wcrear_sub_control('1', 'div', 'col-sm-12', '$dependencia1', '', '', '1', '$perfil1', '$id_componente1')");
                                             if(pg_num_rows($result1) > 0)
                                             {	
                                                 $response["resultado"] = array();
@@ -104,8 +105,8 @@ error_reporting(0);
                                                 }
                                                 $response["success"] = true;
                                                 $response["message"] = "Existen registros.";
-                                                $dependencia2 = $response["resultado"][0]["wcrear_control"];
-                                                $result1 = pg_query($conn, "SELECT wcrear_control('1', 'p', '', '$dependencia2', 'Lorem ipsum Titulo general', '', '1', '$perfil1')");
+                                                $dependencia2 = $response["resultado"][0]["wcrear_sub_control"];
+                                                $result1 = pg_query($conn, "SELECT wcrear_sub_control('1', 'p', '', '$dependencia2', 'Lorem ipsum Titulo general', '', '1', '$perfil1', '$id_componente1')");
                                                 if(pg_num_rows($result1) > 0)
                                                 {	
                                                     $response["resultado"] = array();
@@ -134,7 +135,7 @@ error_reporting(0);
 						}
                     }else if($codigo == '2'){// PREGUNTA COMPLETA SI NO
                         $level = 0;
-						$result = pg_query($conn, 	"SELECT ranking+1 as ranking FROM wcomponentehtml WHERE dependencia = $dependencia1 AND perfil = $perfil1 order by ranking desc limit 1");
+						$result = pg_query($conn, 	"SELECT ranking+1 as ranking FROM wsubcomponentehtml WHERE dependencia = $dependencia1 AND perfil = $perfil1 order by ranking desc limit 1");
 						if(pg_num_rows($result) > 0)
 						{	
                             $response["resultado"] = array();
@@ -157,7 +158,7 @@ error_reporting(0);
                             //echo json_encode($response);
                         }
                         
-                        $result = pg_query($conn, "SELECT wcrear_control('1', 'div', 'col-sm-6', '$dependencia1', '', '', '$level', '$perfil1')");
+                        $result = pg_query($conn, "SELECT wcrear_sub_control('1', 'div', 'col-sm-12', '$dependencia1', '', '', '$level', '$perfil1', '$id_componente1')");
                         if(pg_num_rows($result) > 0)
                         {	
                             $response["resultado"] = array();
@@ -170,9 +171,9 @@ error_reporting(0);
                             $response["success"] = true;
                             $response["message"] = "Existen registros.";
                             //echo json_encode($response);
-                            $dependencia = $response["resultado"][0]["wcrear_control"];
-                            $result1 = pg_query($conn, "SELECT wcrear_control('1', 'p', '', '$dependencia', 'Lorem ipsum Pregunta', '', '1', '$perfil1')");
-                            $result1 = pg_query($conn, "SELECT wcrear_control('1', 'div', 'form-group clearfix', '$dependencia', '', '', '2', '$perfil1')");
+                            $dependencia = $response["resultado"][0]["wcrear_sub_control"];
+                            $result1 = pg_query($conn, "SELECT wcrear_sub_control('1', 'p', '', '$dependencia', 'Lorem ipsum Pregunta', '', '1', '$perfil1', '$id_componente1')");
+                            $result1 = pg_query($conn, "SELECT wcrear_sub_control('1', 'div', 'form-group clearfix', '$dependencia', '', '', '2', '$perfil1', '$id_componente1')");
                             if(pg_num_rows($result1) > 0)
                             {	
                                 $response["resultado"] = array();
@@ -184,14 +185,14 @@ error_reporting(0);
                                 }
                                 $response["success"] = true;
                                 $response["message"] = "Existen registros.";
-                                $dependencia = $response["resultado"][0]["wcrear_control"];
-                                $result1 = pg_query($conn, "SELECT wcrear_control('1', 'p', '', '$dependencia', 'Fecha inicial', '', '2', '$perfil1')");
-                                $result1 = pg_query($conn, "SELECT wcrear_control('1', 'input', 'form-control', '$dependencia', '', 'date', '3', '$perfil1')");
-                                $result1 = pg_query($conn, "SELECT wcrear_control('1', 'p', '', '$dependencia', 'Fecha final', '', '4', '$perfil1')");
-                                $result1 = pg_query($conn, "SELECT wcrear_control('1', 'input', 'form-control', '$dependencia', '', 'date', '5', '$perfil1')");
-                                $result1 = pg_query($conn, "SELECT wcrear_control('1', 'p', '', '$dependencia', 'Observación', '', '6', '$perfil1')");
-                                $result1 = pg_query($conn, "SELECT wcrear_control('1', 'textarea', 'form-control', '$dependencia', '', '', '7', '$perfil1')");
-                                $result1 = pg_query($conn, "SELECT wcrear_control('1', 'div', 'icheck-primary d-inline', '$dependencia', '', '', '1', '$perfil1')");
+                                $dependencia = $response["resultado"][0]["wcrear_sub_control"];
+                                $result1 = pg_query($conn, "SELECT wcrear_sub_control('1', 'p', '', '$dependencia', 'Fecha inicial', '', '2', '$perfil1', '$id_componente1')");
+                                $result1 = pg_query($conn, "SELECT wcrear_sub_control('1', 'input', 'form-control', '$dependencia', '', 'date', '3', '$perfil1', '$id_componente1')");
+                                $result1 = pg_query($conn, "SELECT wcrear_sub_control('1', 'p', '', '$dependencia', 'Fecha final', '', '4', '$perfil1', '$id_componente1')");
+                                $result1 = pg_query($conn, "SELECT wcrear_sub_control('1', 'input', 'form-control', '$dependencia', '', 'date', '5', '$perfil1', '$id_componente1')");
+                                $result1 = pg_query($conn, "SELECT wcrear_sub_control('1', 'p', '', '$dependencia', 'Observación', '', '6', '$perfil1', '$id_componente1')");
+                                $result1 = pg_query($conn, "SELECT wcrear_sub_control('1', 'textarea', 'form-control', '$dependencia', '', '', '7', '$perfil1', '$id_componente1')");
+                                $result1 = pg_query($conn, "SELECT wcrear_sub_control('1', 'div', 'icheck-primary d-inline', '$dependencia', '', '', '1', '$perfil1', '$id_componente1')");
                                 if(pg_num_rows($result1) > 0)
                                 {	
                                     $response["resultado"] = array();
@@ -203,9 +204,9 @@ error_reporting(0);
                                     }
                                     $response["success"] = true;
                                     $response["message"] = "Existen registros.";
-                                    $dependencia = $response["resultado"][0]["wcrear_control"];
-                                    $result1 = pg_query($conn, "SELECT wcrear_control('1', 'input', '', '$dependencia', 'SI', 'radio', '1', '$perfil1')");
-                                    $result1 = pg_query($conn, "SELECT wcrear_control('1', 'input', '', '$dependencia', 'NO', 'radio', '2', '$perfil1')");
+                                    $dependencia = $response["resultado"][0]["wcrear_sub_control"];
+                                    $result1 = pg_query($conn, "SELECT wcrear_sub_control('1', 'input', '', '$dependencia', 'SI', 'radio', '1', '$perfil1', '$id_componente1')");
+                                    $result1 = pg_query($conn, "SELECT wcrear_sub_control('1', 'input', '', '$dependencia', 'NO', 'radio', '2', '$perfil1', '$id_componente1')");
                                     if(pg_num_rows($result1) > 0)
                                     {	
                                         $response["resultado"] = array();
@@ -228,7 +229,7 @@ error_reporting(0);
                         }
 					}else if($codigo == '3'){// PREGUNTA SIN FECHAS SI NO
                         $level = 0;
-						$result = pg_query($conn, 	"SELECT ranking+1 as ranking FROM wcomponentehtml WHERE dependencia = $dependencia1 AND perfil = $perfil1 order by ranking desc limit 1");
+						$result = pg_query($conn, 	"SELECT ranking+1 as ranking FROM wsubcomponentehtml WHERE dependencia = $dependencia1 AND perfil = $perfil1 order by ranking desc limit 1");
 						if(pg_num_rows($result) > 0)
 						{	
                             $response["resultado"] = array();
@@ -251,7 +252,7 @@ error_reporting(0);
                             //echo json_encode($response);
                         }
                         
-                        $result = pg_query($conn, "SELECT wcrear_control('1', 'div', 'col-sm-6', '$dependencia1', '', '', '$level', '$perfil1')");
+                        $result = pg_query($conn, "SELECT wcrear_sub_control('1', 'div', 'col-sm-12', '$dependencia1', '', '', '$level', '$perfil1', '$id_componente1')");
                         if(pg_num_rows($result) > 0)
                         {	
                             $response["resultado"] = array();
@@ -264,9 +265,9 @@ error_reporting(0);
                             $response["success"] = true;
                             $response["message"] = "Existen registros.";
                             //echo json_encode($response);
-                            $dependencia = $response["resultado"][0]["wcrear_control"];
-                            $result1 = pg_query($conn, "SELECT wcrear_control('1', 'p', '', '$dependencia', 'Lorem ipsum Pregunta', '', '1', '$perfil1')");
-                            $result1 = pg_query($conn, "SELECT wcrear_control('1', 'div', 'form-group clearfix', '$dependencia', '', '', '2', '$perfil1')");
+                            $dependencia = $response["resultado"][0]["wcrear_sub_control"];
+                            $result1 = pg_query($conn, "SELECT wcrear_sub_control('1', 'p', '', '$dependencia', 'Lorem ipsum Pregunta', '', '1', '$perfil1', '$id_componente1')");
+                            $result1 = pg_query($conn, "SELECT wcrear_sub_control('1', 'div', 'form-group clearfix', '$dependencia', '', '', '2', '$perfil1', '$id_componente1')");
                             if(pg_num_rows($result1) > 0)
                             {	
                                 $response["resultado"] = array();
@@ -278,10 +279,10 @@ error_reporting(0);
                                 }
                                 $response["success"] = true;
                                 $response["message"] = "Existen registros.";
-                                $dependencia = $response["resultado"][0]["wcrear_control"];
-                                $result1 = pg_query($conn, "SELECT wcrear_control('1', 'p', '', '$dependencia', 'Observación', '', '6', '$perfil1')");
-                                $result1 = pg_query($conn, "SELECT wcrear_control('1', 'textarea', 'form-control', '$dependencia', '', '', '7', '$perfil1')");
-                                $result1 = pg_query($conn, "SELECT wcrear_control('1', 'div', 'icheck-primary d-inline', '$dependencia', '', '', '1', '$perfil1')");
+                                $dependencia = $response["resultado"][0]["wcrear_sub_control"];
+                                $result1 = pg_query($conn, "SELECT wcrear_sub_control('1', 'p', '', '$dependencia', 'Observación', '', '6', '$perfil1', '$id_componente1')");
+                                $result1 = pg_query($conn, "SELECT wcrear_sub_control('1', 'textarea', 'form-control', '$dependencia', '', '', '7', '$perfil1', '$id_componente1')");
+                                $result1 = pg_query($conn, "SELECT wcrear_sub_control('1', 'div', 'icheck-primary d-inline', '$dependencia', '', '', '1', '$perfil1', '$id_componente1')");
                                 if(pg_num_rows($result1) > 0)
                                 {	
                                     $response["resultado"] = array();
@@ -293,9 +294,9 @@ error_reporting(0);
                                     }
                                     $response["success"] = true;
                                     $response["message"] = "Existen registros.";
-                                    $dependencia = $response["resultado"][0]["wcrear_control"];
-                                    $result1 = pg_query($conn, "SELECT wcrear_control('1', 'input', '', '$dependencia', 'SI', 'radio', '1', '$perfil1')");
-                                    $result1 = pg_query($conn, "SELECT wcrear_control('1', 'input', '', '$dependencia', 'NO', 'radio', '2', '$perfil1')");
+                                    $dependencia = $response["resultado"][0]["wcrear_sub_control"];
+                                    $result1 = pg_query($conn, "SELECT wcrear_sub_control('1', 'input', '', '$dependencia', 'SI', 'radio', '1', '$perfil1', '$id_componente1')");
+                                    $result1 = pg_query($conn, "SELECT wcrear_sub_control('1', 'input', '', '$dependencia', 'NO', 'radio', '2', '$perfil1', '$id_componente1')");
                                     if(pg_num_rows($result1) > 0)
                                     {	
                                         $response["resultado"] = array();
@@ -318,7 +319,7 @@ error_reporting(0);
                         }
 					}else if($codigo == '4'){// PREGUNTA SIN FECHAS NI OBSERVACION SI NO
                         $level = 0;
-						$result = pg_query($conn, 	"SELECT ranking+1 as ranking FROM wcomponentehtml WHERE dependencia = $dependencia1 AND perfil = $perfil1 order by ranking desc limit 1");
+						$result = pg_query($conn, 	"SELECT ranking+1 as ranking FROM wsubcomponentehtml WHERE dependencia = $dependencia1 AND perfil = $perfil1 order by ranking desc limit 1");
 						if(pg_num_rows($result) > 0)
 						{	
                             $response["resultado"] = array();
@@ -341,7 +342,7 @@ error_reporting(0);
                             //echo json_encode($response);
                         }
                         
-                        $result = pg_query($conn, "SELECT wcrear_control('1', 'div', 'col-sm-6', '$dependencia1', '', '', '$level', '$perfil1')");
+                        $result = pg_query($conn, "SELECT wcrear_sub_control('1', 'div', 'col-sm-12', '$dependencia1', '', '', '$level', '$perfil1', '$id_componente1')");
                         if(pg_num_rows($result) > 0)
                         {	
                             $response["resultado"] = array();
@@ -354,9 +355,9 @@ error_reporting(0);
                             $response["success"] = true;
                             $response["message"] = "Existen registros.";
                             //echo json_encode($response);
-                            $dependencia = $response["resultado"][0]["wcrear_control"];
-                            $result1 = pg_query($conn, "SELECT wcrear_control('1', 'p', '', '$dependencia', 'Lorem ipsum Pregunta', '', '1', '$perfil1')");
-                            $result1 = pg_query($conn, "SELECT wcrear_control('1', 'div', 'form-group clearfix', '$dependencia', '', '', '2', '$perfil1')");
+                            $dependencia = $response["resultado"][0]["wcrear_sub_control"];
+                            $result1 = pg_query($conn, "SELECT wcrear_sub_control('1', 'p', '', '$dependencia', 'Lorem ipsum Pregunta', '', '1', '$perfil1', '$id_componente1')");
+                            $result1 = pg_query($conn, "SELECT wcrear_sub_control('1', 'div', 'form-group clearfix', '$dependencia', '', '', '2', '$perfil1', '$id_componente1')");
                             if(pg_num_rows($result1) > 0)
                             {	
                                 $response["resultado"] = array();
@@ -368,8 +369,8 @@ error_reporting(0);
                                 }
                                 $response["success"] = true;
                                 $response["message"] = "Existen registros.";
-                                $dependencia = $response["resultado"][0]["wcrear_control"];
-                                $result1 = pg_query($conn, "SELECT wcrear_control('1', 'div', 'icheck-primary d-inline', '$dependencia', '', '', '1', '$perfil1')");
+                                $dependencia = $response["resultado"][0]["wcrear_sub_control"];
+                                $result1 = pg_query($conn, "SELECT wcrear_sub_control('1', 'div', 'icheck-primary d-inline', '$dependencia', '', '', '1', '$perfil1', '$id_componente1')");
                                 if(pg_num_rows($result1) > 0)
                                 {	
                                     $response["resultado"] = array();
@@ -381,9 +382,9 @@ error_reporting(0);
                                     }
                                     $response["success"] = true;
                                     $response["message"] = "Existen registros.";
-                                    $dependencia = $response["resultado"][0]["wcrear_control"];
-                                    $result1 = pg_query($conn, "SELECT wcrear_control('1', 'input', '', '$dependencia', 'SI', 'radio', '1', '$perfil1')");
-                                    $result1 = pg_query($conn, "SELECT wcrear_control('1', 'input', '', '$dependencia', 'NO', 'radio', '2', '$perfil1')");
+                                    $dependencia = $response["resultado"][0]["wcrear_sub_control"];
+                                    $result1 = pg_query($conn, "SELECT wcrear_sub_control('1', 'input', '', '$dependencia', 'SI', 'radio', '1', '$perfil1', '$id_componente1')");
+                                    $result1 = pg_query($conn, "SELECT wcrear_sub_control('1', 'input', '', '$dependencia', 'NO', 'radio', '2', '$perfil1', '$id_componente1')");
                                     if(pg_num_rows($result1) > 0)
                                     {	
                                         $response["resultado"] = array();
@@ -406,7 +407,7 @@ error_reporting(0);
                         }
 					}else if($codigo == '5'){// PREGUNTA CON FECHAS Y SI NO
                         $level = 0;
-						$result = pg_query($conn, 	"SELECT ranking+1 as ranking FROM wcomponentehtml WHERE dependencia = $dependencia1 AND perfil = $perfil1 order by ranking desc limit 1");
+						$result = pg_query($conn, 	"SELECT ranking+1 as ranking FROM wsubcomponentehtml WHERE dependencia = $dependencia1 AND perfil = $perfil1 order by ranking desc limit 1");
 						if(pg_num_rows($result) > 0)
 						{	
                             $response["resultado"] = array();
@@ -429,7 +430,7 @@ error_reporting(0);
                             //echo json_encode($response);
                         }
                         
-                        $result = pg_query($conn, "SELECT wcrear_control('1', 'div', 'col-sm-6', '$dependencia1', '', '', '$level', '$perfil1')");
+                        $result = pg_query($conn, "SELECT wcrear_sub_control('1', 'div', 'col-sm-12', '$dependencia1', '', '', '$level', '$perfil1', '$id_componente1')");
                         if(pg_num_rows($result) > 0)
                         {	
                             $response["resultado"] = array();
@@ -442,9 +443,9 @@ error_reporting(0);
                             $response["success"] = true;
                             $response["message"] = "Existen registros.";
                             //echo json_encode($response);
-                            $dependencia = $response["resultado"][0]["wcrear_control"];
-                            $result1 = pg_query($conn, "SELECT wcrear_control('1', 'p', '', '$dependencia', 'Lorem ipsum Pregunta', '', '1', '$perfil1')");
-                            $result1 = pg_query($conn, "SELECT wcrear_control('1', 'div', 'form-group clearfix', '$dependencia', '', '', '2', '$perfil1')");
+                            $dependencia = $response["resultado"][0]["wcrear_sub_control"];
+                            $result1 = pg_query($conn, "SELECT wcrear_sub_control('1', 'p', '', '$dependencia', 'Lorem ipsum Pregunta', '', '1', '$perfil1', '$id_componente1')");
+                            $result1 = pg_query($conn, "SELECT wcrear_sub_control('1', 'div', 'form-group clearfix', '$dependencia', '', '', '2', '$perfil1', '$id_componente1')");
                             if(pg_num_rows($result1) > 0)
                             {	
                                 $response["resultado"] = array();
@@ -456,12 +457,12 @@ error_reporting(0);
                                 }
                                 $response["success"] = true;
                                 $response["message"] = "Existen registros.";
-                                $dependencia = $response["resultado"][0]["wcrear_control"];
-                                $result1 = pg_query($conn, "SELECT wcrear_control('1', 'p', '', '$dependencia', 'Fecha inicial', '', '2', '$perfil1')");
-                                $result1 = pg_query($conn, "SELECT wcrear_control('1', 'input', 'form-control', '$dependencia', '', 'date', '3', '$perfil1')");
-                                $result1 = pg_query($conn, "SELECT wcrear_control('1', 'p', '', '$dependencia', 'Fecha final', '', '4', '$perfil1')");
-                                $result1 = pg_query($conn, "SELECT wcrear_control('1', 'input', 'form-control', '$dependencia', '', 'date', '5', '$perfil1')");
-                                $result1 = pg_query($conn, "SELECT wcrear_control('1', 'div', 'icheck-primary d-inline', '$dependencia', '', '', '1', '$perfil1')");
+                                $dependencia = $response["resultado"][0]["wcrear_sub_control"];
+                                $result1 = pg_query($conn, "SELECT wcrear_sub_control('1', 'p', '', '$dependencia', 'Fecha inicial', '', '2', '$perfil1', '$id_componente1')");
+                                $result1 = pg_query($conn, "SELECT wcrear_sub_control('1', 'input', 'form-control', '$dependencia', '', 'date', '3', '$perfil1', '$id_componente1')");
+                                $result1 = pg_query($conn, "SELECT wcrear_sub_control('1', 'p', '', '$dependencia', 'Fecha final', '', '4', '$perfil1', '$id_componente1')");
+                                $result1 = pg_query($conn, "SELECT wcrear_sub_control('1', 'input', 'form-control', '$dependencia', '', 'date', '5', '$perfil1', '$id_componente1')");
+                                $result1 = pg_query($conn, "SELECT wcrear_sub_control('1', 'div', 'icheck-primary d-inline', '$dependencia', '', '', '1', '$perfil1', '$id_componente1')");
                                 if(pg_num_rows($result1) > 0)
                                 {	
                                     $response["resultado"] = array();
@@ -473,9 +474,9 @@ error_reporting(0);
                                     }
                                     $response["success"] = true;
                                     $response["message"] = "Existen registros.";
-                                    $dependencia = $response["resultado"][0]["wcrear_control"];
-                                    $result1 = pg_query($conn, "SELECT wcrear_control('1', 'input', '', '$dependencia', 'SI', 'radio', '1', '$perfil1')");
-                                    $result1 = pg_query($conn, "SELECT wcrear_control('1', 'input', '', '$dependencia', 'NO', 'radio', '2', '$perfil1')");
+                                    $dependencia = $response["resultado"][0]["wcrear_sub_control"];
+                                    $result1 = pg_query($conn, "SELECT wcrear_sub_control('1', 'input', '', '$dependencia', 'SI', 'radio', '1', '$perfil1', '$id_componente1')");
+                                    $result1 = pg_query($conn, "SELECT wcrear_sub_control('1', 'input', '', '$dependencia', 'NO', 'radio', '2', '$perfil1', '$id_componente1')");
                                     if(pg_num_rows($result1) > 0)
                                     {	
                                         $response["resultado"] = array();
@@ -498,7 +499,7 @@ error_reporting(0);
                         }
 					}else if($codigo == '6'){// PREGUNTA COMPLETA CUMPLE NO CUMPLE NO APLICA
                         $level = 0;
-						$result = pg_query($conn, 	"SELECT ranking+1 as ranking FROM wcomponentehtml WHERE dependencia = $dependencia1 AND perfil = $perfil1 order by ranking desc limit 1");
+						$result = pg_query($conn, 	"SELECT ranking+1 as ranking FROM wsubcomponentehtml WHERE dependencia = $dependencia1 AND perfil = $perfil1 order by ranking desc limit 1");
 						if(pg_num_rows($result) > 0)
 						{	
                             $response["resultado"] = array();
@@ -521,7 +522,7 @@ error_reporting(0);
                             //echo json_encode($response);
                         }
                         
-                        $result = pg_query($conn, "SELECT wcrear_control('1', 'div', 'col-sm-6', '$dependencia1', '', '', '$level', '$perfil1')");
+                        $result = pg_query($conn, "SELECT wcrear_sub_control('1', 'div', 'col-sm-12', '$dependencia1', '', '', '$level', '$perfil1', '$id_componente1')");
                         if(pg_num_rows($result) > 0)
                         {	
                             $response["resultado"] = array();
@@ -534,9 +535,9 @@ error_reporting(0);
                             $response["success"] = true;
                             $response["message"] = "Existen registros.";
                             //echo json_encode($response);
-                            $dependencia = $response["resultado"][0]["wcrear_control"];
-                            $result1 = pg_query($conn, "SELECT wcrear_control('1', 'p', '', '$dependencia', 'Lorem ipsum Pregunta', '', '1', '$perfil1')");
-                            $result1 = pg_query($conn, "SELECT wcrear_control('1', 'div', 'form-group clearfix', '$dependencia', '', '', '2', '$perfil1')");
+                            $dependencia = $response["resultado"][0]["wcrear_sub_control"];
+                            $result1 = pg_query($conn, "SELECT wcrear_sub_control('1', 'p', '', '$dependencia', 'Lorem ipsum Pregunta', '', '1', '$perfil1', '$id_componente1')");
+                            $result1 = pg_query($conn, "SELECT wcrear_sub_control('1', 'div', 'form-group clearfix', '$dependencia', '', '', '2', '$perfil1', '$id_componente1')");
                             if(pg_num_rows($result1) > 0)
                             {	
                                 $response["resultado"] = array();
@@ -548,14 +549,14 @@ error_reporting(0);
                                 }
                                 $response["success"] = true;
                                 $response["message"] = "Existen registros.";
-                                $dependencia = $response["resultado"][0]["wcrear_control"];
-                                $result1 = pg_query($conn, "SELECT wcrear_control('1', 'p', '', '$dependencia', 'Fecha inicial', '', '2', '$perfil1')");
-                                $result1 = pg_query($conn, "SELECT wcrear_control('1', 'input', 'form-control', '$dependencia', '', 'date', '3', '$perfil1')");
-                                $result1 = pg_query($conn, "SELECT wcrear_control('1', 'p', '', '$dependencia', 'Fecha final', '', '4', '$perfil1')");
-                                $result1 = pg_query($conn, "SELECT wcrear_control('1', 'input', 'form-control', '$dependencia', '', 'date', '5', '$perfil1')");
-                                $result1 = pg_query($conn, "SELECT wcrear_control('1', 'p', '', '$dependencia', 'Observación', '', '6', '$perfil1')");
-                                $result1 = pg_query($conn, "SELECT wcrear_control('1', 'textarea', 'form-control', '$dependencia', '', '', '7', '$perfil1')");
-                                $result1 = pg_query($conn, "SELECT wcrear_control('1', 'div', 'icheck-primary d-inline', '$dependencia', '', '', '1', '$perfil1')");
+                                $dependencia = $response["resultado"][0]["wcrear_sub_control"];
+                                $result1 = pg_query($conn, "SELECT wcrear_sub_control('1', 'p', '', '$dependencia', 'Fecha inicial', '', '2', '$perfil1', '$id_componente1')");
+                                $result1 = pg_query($conn, "SELECT wcrear_sub_control('1', 'input', 'form-control', '$dependencia', '', 'date', '3', '$perfil1', '$id_componente1')");
+                                $result1 = pg_query($conn, "SELECT wcrear_sub_control('1', 'p', '', '$dependencia', 'Fecha final', '', '4', '$perfil1', '$id_componente1')");
+                                $result1 = pg_query($conn, "SELECT wcrear_sub_control('1', 'input', 'form-control', '$dependencia', '', 'date', '5', '$perfil1', '$id_componente1')");
+                                $result1 = pg_query($conn, "SELECT wcrear_sub_control('1', 'p', '', '$dependencia', 'Observación', '', '6', '$perfil1', '$id_componente1')");
+                                $result1 = pg_query($conn, "SELECT wcrear_sub_control('1', 'textarea', 'form-control', '$dependencia', '', '', '7', '$perfil1', '$id_componente1')");
+                                $result1 = pg_query($conn, "SELECT wcrear_sub_control('1', 'div', 'icheck-primary d-inline', '$dependencia', '', '', '1', '$perfil1', '$id_componente1')");
                                 if(pg_num_rows($result1) > 0)
                                 {	
                                     $response["resultado"] = array();
@@ -567,10 +568,10 @@ error_reporting(0);
                                     }
                                     $response["success"] = true;
                                     $response["message"] = "Existen registros.";
-                                    $dependencia = $response["resultado"][0]["wcrear_control"];
-                                    $result1 = pg_query($conn, "SELECT wcrear_control('1', 'input', '', '$dependencia', 'CUMPLE', 'radio', '1', '$perfil1')");
-                                    $result1 = pg_query($conn, "SELECT wcrear_control('1', 'input', '', '$dependencia', 'NO CUMPLE', 'radio', '2', '$perfil1')");
-                                    $result1 = pg_query($conn, "SELECT wcrear_control('1', 'input', '', '$dependencia', 'NO APLICA', 'radio', '3', '$perfil1')");
+                                    $dependencia = $response["resultado"][0]["wcrear_sub_control"];
+                                    $result1 = pg_query($conn, "SELECT wcrear_sub_control('1', 'input', '', '$dependencia', 'CUMPLE', 'radio', '1', '$perfil1', '$id_componente1')");
+                                    $result1 = pg_query($conn, "SELECT wcrear_sub_control('1', 'input', '', '$dependencia', 'NO CUMPLE', 'radio', '2', '$perfil1', '$id_componente1')");
+                                    $result1 = pg_query($conn, "SELECT wcrear_sub_control('1', 'input', '', '$dependencia', 'NO APLICA', 'radio', '3', '$perfil1', '$id_componente1')");
                                     if(pg_num_rows($result1) > 0)
                                     {	
                                         $response["resultado"] = array();
@@ -593,7 +594,7 @@ error_reporting(0);
                         }
 					}else if($codigo == '7'){// PREGUNTA SIN FECHAS CUMPLE NO CUMPLE NO APLICA
                         $level = 0;
-						$result = pg_query($conn, 	"SELECT ranking+1 as ranking FROM wcomponentehtml WHERE dependencia = $dependencia1 AND perfil = $perfil1 order by ranking desc limit 1");
+						$result = pg_query($conn, 	"SELECT ranking+1 as ranking FROM wsubcomponentehtml WHERE dependencia = $dependencia1 AND perfil = $perfil1 order by ranking desc limit 1");
 						if(pg_num_rows($result) > 0)
 						{	
                             $response["resultado"] = array();
@@ -616,7 +617,7 @@ error_reporting(0);
                             //echo json_encode($response);
                         }
                         
-                        $result = pg_query($conn, "SELECT wcrear_control('1', 'div', 'col-sm-6', '$dependencia1', '', '', '$level', '$perfil1')");
+                        $result = pg_query($conn, "SELECT wcrear_sub_control('1', 'div', 'col-sm-12', '$dependencia1', '', '', '$level', '$perfil1', '$id_componente1')");
                         if(pg_num_rows($result) > 0)
                         {	
                             $response["resultado"] = array();
@@ -629,9 +630,9 @@ error_reporting(0);
                             $response["success"] = true;
                             $response["message"] = "Existen registros.";
                             //echo json_encode($response);
-                            $dependencia = $response["resultado"][0]["wcrear_control"];
-                            $result1 = pg_query($conn, "SELECT wcrear_control('1', 'p', '', '$dependencia', 'Lorem ipsum Pregunta', '', '1', '$perfil1')");
-                            $result1 = pg_query($conn, "SELECT wcrear_control('1', 'div', 'form-group clearfix', '$dependencia', '', '', '2', '$perfil1')");
+                            $dependencia = $response["resultado"][0]["wcrear_sub_control"];
+                            $result1 = pg_query($conn, "SELECT wcrear_sub_control('1', 'p', '', '$dependencia', 'Lorem ipsum Pregunta', '', '1', '$perfil1', '$id_componente1')");
+                            $result1 = pg_query($conn, "SELECT wcrear_sub_control('1', 'div', 'form-group clearfix', '$dependencia', '', '', '2', '$perfil1', '$id_componente1')");
                             if(pg_num_rows($result1) > 0)
                             {	
                                 $response["resultado"] = array();
@@ -643,10 +644,10 @@ error_reporting(0);
                                 }
                                 $response["success"] = true;
                                 $response["message"] = "Existen registros.";
-                                $dependencia = $response["resultado"][0]["wcrear_control"];
-                                $result1 = pg_query($conn, "SELECT wcrear_control('1', 'p', '', '$dependencia', 'Observación', '', '6', '$perfil1')");
-                                $result1 = pg_query($conn, "SELECT wcrear_control('1', 'textarea', 'form-control', '$dependencia', '', '', '7', '$perfil1')");
-                                $result1 = pg_query($conn, "SELECT wcrear_control('1', 'div', 'icheck-primary d-inline', '$dependencia', '', '', '1', '$perfil1')");
+                                $dependencia = $response["resultado"][0]["wcrear_sub_control"];
+                                $result1 = pg_query($conn, "SELECT wcrear_sub_control('1', 'p', '', '$dependencia', 'Observación', '', '6', '$perfil1', '$id_componente1')");
+                                $result1 = pg_query($conn, "SELECT wcrear_sub_control('1', 'textarea', 'form-control', '$dependencia', '', '', '7', '$perfil1', '$id_componente1')");
+                                $result1 = pg_query($conn, "SELECT wcrear_sub_control('1', 'div', 'icheck-primary d-inline', '$dependencia', '', '', '1', '$perfil1', '$id_componente1')");
                                 if(pg_num_rows($result1) > 0)
                                 {	
                                     $response["resultado"] = array();
@@ -658,10 +659,10 @@ error_reporting(0);
                                     }
                                     $response["success"] = true;
                                     $response["message"] = "Existen registros.";
-                                    $dependencia = $response["resultado"][0]["wcrear_control"];
-                                    $result1 = pg_query($conn, "SELECT wcrear_control('1', 'input', '', '$dependencia', 'CUMPLE', 'radio', '1', '$perfil1')");
-                                    $result1 = pg_query($conn, "SELECT wcrear_control('1', 'input', '', '$dependencia', 'NO CUMPLE', 'radio', '2', '$perfil1')");
-                                    $result1 = pg_query($conn, "SELECT wcrear_control('1', 'input', '', '$dependencia', 'NO APLICA', 'radio', '3', '$perfil1')");
+                                    $dependencia = $response["resultado"][0]["wcrear_sub_control"];
+                                    $result1 = pg_query($conn, "SELECT wcrear_sub_control('1', 'input', '', '$dependencia', 'CUMPLE', 'radio', '1', '$perfil1', '$id_componente1')");
+                                    $result1 = pg_query($conn, "SELECT wcrear_sub_control('1', 'input', '', '$dependencia', 'NO CUMPLE', 'radio', '2', '$perfil1', '$id_componente1')");
+                                    $result1 = pg_query($conn, "SELECT wcrear_sub_control('1', 'input', '', '$dependencia', 'NO APLICA', 'radio', '3', '$perfil1', '$id_componente1')");
                                     if(pg_num_rows($result1) > 0)
                                     {	
                                         $response["resultado"] = array();
@@ -684,7 +685,7 @@ error_reporting(0);
                         }
 					}else if($codigo == '8'){// PREGUNTA SIN FECHAS NI OBSERVACION CUMPLE NO CUMPLE NO APLICA
                         $level = 0;
-						$result = pg_query($conn, 	"SELECT ranking+1 as ranking FROM wcomponentehtml WHERE dependencia = $dependencia1 AND perfil = $perfil1 order by ranking desc limit 1");
+						$result = pg_query($conn, 	"SELECT ranking+1 as ranking FROM wsubcomponentehtml WHERE dependencia = $dependencia1 AND perfil = $perfil1 order by ranking desc limit 1");
 						if(pg_num_rows($result) > 0)
 						{	
                             $response["resultado"] = array();
@@ -707,7 +708,7 @@ error_reporting(0);
                             //echo json_encode($response);
                         }
                         
-                        $result = pg_query($conn, "SELECT wcrear_control('1', 'div', 'col-sm-6', '$dependencia1', '', '', '$level', '$perfil1')");
+                        $result = pg_query($conn, "SELECT wcrear_sub_control('1', 'div', 'col-sm-12', '$dependencia1', '', '', '$level', '$perfil1', '$id_componente1')");
                         if(pg_num_rows($result) > 0)
                         {	
                             $response["resultado"] = array();
@@ -720,9 +721,9 @@ error_reporting(0);
                             $response["success"] = true;
                             $response["message"] = "Existen registros.";
                             //echo json_encode($response);
-                            $dependencia = $response["resultado"][0]["wcrear_control"];
-                            $result1 = pg_query($conn, "SELECT wcrear_control('1', 'p', '', '$dependencia', 'Lorem ipsum Pregunta', '', '1', '$perfil1')");
-                            $result1 = pg_query($conn, "SELECT wcrear_control('1', 'div', 'form-group clearfix', '$dependencia', '', '', '2', '$perfil1')");
+                            $dependencia = $response["resultado"][0]["wcrear_sub_control"];
+                            $result1 = pg_query($conn, "SELECT wcrear_sub_control('1', 'p', '', '$dependencia', 'Lorem ipsum Pregunta', '', '1', '$perfil1', '$id_componente1')");
+                            $result1 = pg_query($conn, "SELECT wcrear_sub_control('1', 'div', 'form-group clearfix', '$dependencia', '', '', '2', '$perfil1', '$id_componente1')");
                             if(pg_num_rows($result1) > 0)
                             {	
                                 $response["resultado"] = array();
@@ -734,8 +735,8 @@ error_reporting(0);
                                 }
                                 $response["success"] = true;
                                 $response["message"] = "Existen registros.";
-                                $dependencia = $response["resultado"][0]["wcrear_control"];
-                                $result1 = pg_query($conn, "SELECT wcrear_control('1', 'div', 'icheck-primary d-inline', '$dependencia', '', '', '1', '$perfil1')");
+                                $dependencia = $response["resultado"][0]["wcrear_sub_control"];
+                                $result1 = pg_query($conn, "SELECT wcrear_sub_control('1', 'div', 'icheck-primary d-inline', '$dependencia', '', '', '1', '$perfil1', '$id_componente1')");
                                 if(pg_num_rows($result1) > 0)
                                 {	
                                     $response["resultado"] = array();
@@ -747,10 +748,10 @@ error_reporting(0);
                                     }
                                     $response["success"] = true;
                                     $response["message"] = "Existen registros.";
-                                    $dependencia = $response["resultado"][0]["wcrear_control"];
-                                    $result1 = pg_query($conn, "SELECT wcrear_control('1', 'input', '', '$dependencia', 'CUMPLE', 'radio', '1', '$perfil1')");
-                                    $result1 = pg_query($conn, "SELECT wcrear_control('1', 'input', '', '$dependencia', 'NO CUMPLE', 'radio', '2', '$perfil1')");
-                                    $result1 = pg_query($conn, "SELECT wcrear_control('1', 'input', '', '$dependencia', 'NO APLICA', 'radio', '3', '$perfil1')");
+                                    $dependencia = $response["resultado"][0]["wcrear_sub_control"];
+                                    $result1 = pg_query($conn, "SELECT wcrear_sub_control('1', 'input', '', '$dependencia', 'CUMPLE', 'radio', '1', '$perfil1', '$id_componente1')");
+                                    $result1 = pg_query($conn, "SELECT wcrear_sub_control('1', 'input', '', '$dependencia', 'NO CUMPLE', 'radio', '2', '$perfil1', '$id_componente1')");
+                                    $result1 = pg_query($conn, "SELECT wcrear_sub_control('1', 'input', '', '$dependencia', 'NO APLICA', 'radio', '3', '$perfil1', '$id_componente1')");
                                     if(pg_num_rows($result1) > 0)
                                     {	
                                         $response["resultado"] = array();
@@ -773,7 +774,7 @@ error_reporting(0);
                         }
 					}else if($codigo == '9'){// PREGUNTA CON UNA FECHA Y SI NO
                         $level = 0;
-						$result = pg_query($conn, 	"SELECT ranking+1 as ranking FROM wcomponentehtml WHERE dependencia = $dependencia1 AND perfil = $perfil1 order by ranking desc limit 1");
+						$result = pg_query($conn, 	"SELECT ranking+1 as ranking FROM wsubcomponentehtml WHERE dependencia = $dependencia1 AND perfil = $perfil1 order by ranking desc limit 1");
 						if(pg_num_rows($result) > 0)
 						{	
                             $response["resultado"] = array();
@@ -796,7 +797,7 @@ error_reporting(0);
                             //echo json_encode($response);
                         }
                         
-                        $result = pg_query($conn, "SELECT wcrear_control('1', 'div', 'col-sm-6', '$dependencia1', '', '', '$level', '$perfil1')");
+                        $result = pg_query($conn, "SELECT wcrear_sub_control('1', 'div', 'col-sm-6', '$dependencia1', '', '', '$level', '$perfil1', '$id_componente1')");
                         if(pg_num_rows($result) > 0)
                         {	
                             $response["resultado"] = array();
@@ -809,9 +810,9 @@ error_reporting(0);
                             $response["success"] = true;
                             $response["message"] = "Existen registros.";
                             //echo json_encode($response);
-                            $dependencia = $response["resultado"][0]["wcrear_control"];
-                            $result1 = pg_query($conn, "SELECT wcrear_control('1', 'p', '', '$dependencia', 'Lorem ipsum Pregunta', '', '1', '$perfil1')");
-                            $result1 = pg_query($conn, "SELECT wcrear_control('1', 'div', 'form-group clearfix', '$dependencia', '', '', '2', '$perfil1')");
+                            $dependencia = $response["resultado"][0]["wcrear_sub_control"];
+                            $result1 = pg_query($conn, "SELECT wcrear_sub_control('1', 'p', '', '$dependencia', 'Lorem ipsum Pregunta', '', '1', '$perfil1', '$id_componente1')");
+                            $result1 = pg_query($conn, "SELECT wcrear_sub_control('1', 'div', 'form-group clearfix', '$dependencia', '', '', '2', '$perfil1', '$id_componente1')");
                             if(pg_num_rows($result1) > 0)
                             {	
                                 $response["resultado"] = array();
@@ -823,10 +824,10 @@ error_reporting(0);
                                 }
                                 $response["success"] = true;
                                 $response["message"] = "Existen registros.";
-                                $dependencia = $response["resultado"][0]["wcrear_control"];
-                                $result1 = pg_query($conn, "SELECT wcrear_control('1', 'p', '', '$dependencia', 'Fecha inicial', '', '2', '$perfil1')");
-                                $result1 = pg_query($conn, "SELECT wcrear_control('1', 'input', 'form-control', '$dependencia', '', 'date', '3', '$perfil1')");
-                                $result1 = pg_query($conn, "SELECT wcrear_control('1', 'div', 'icheck-primary d-inline', '$dependencia', '', '', '1', '$perfil1')");
+                                $dependencia = $response["resultado"][0]["wcrear_sub_control"];
+                                $result1 = pg_query($conn, "SELECT wcrear_sub_control('1', 'p', '', '$dependencia', 'Fecha inicial', '', '2', '$perfil1', '$id_componente1')");
+                                $result1 = pg_query($conn, "SELECT wcrear_sub_control('1', 'input', 'form-control', '$dependencia', '', 'date', '3', '$perfil1', '$id_componente1')");
+                                $result1 = pg_query($conn, "SELECT wcrear_sub_control('1', 'div', 'icheck-primary d-inline', '$dependencia', '', '', '1', '$perfil1', '$id_componente1')");
                                 if(pg_num_rows($result1) > 0)
                                 {	
                                     $response["resultado"] = array();
@@ -838,9 +839,9 @@ error_reporting(0);
                                     }
                                     $response["success"] = true;
                                     $response["message"] = "Existen registros.";
-                                    $dependencia = $response["resultado"][0]["wcrear_control"];
-                                    $result1 = pg_query($conn, "SELECT wcrear_control('1', 'input', '', '$dependencia', 'SI', 'radio', '1', '$perfil1')");
-                                    $result1 = pg_query($conn, "SELECT wcrear_control('1', 'input', '', '$dependencia', 'NO', 'radio', '2', '$perfil1')");
+                                    $dependencia = $response["resultado"][0]["wcrear_sub_control"];
+                                    $result1 = pg_query($conn, "SELECT wcrear_sub_control('1', 'input', '', '$dependencia', 'SI', 'radio', '1', '$perfil1', '$id_componente1')");
+                                    $result1 = pg_query($conn, "SELECT wcrear_sub_control('1', 'input', '', '$dependencia', 'NO', 'radio', '2', '$perfil1', '$id_componente1')");
                                     if(pg_num_rows($result1) > 0)
                                     {	
                                         $response["resultado"] = array();
@@ -863,7 +864,7 @@ error_reporting(0);
                         }
 					}else if($codigo == '10'){// PREGUNTA CON FECHAS Y CUMPLE NO CUMPLE NO APLICA SIN OBSERVACION
                         $level = 0;
-						$result = pg_query($conn, 	"SELECT ranking+1 as ranking FROM wcomponentehtml WHERE dependencia = $dependencia1 AND perfil = $perfil1 order by ranking desc limit 1");
+						$result = pg_query($conn, 	"SELECT ranking+1 as ranking FROM wsubcomponentehtml WHERE dependencia = $dependencia1 AND perfil = $perfil1 order by ranking desc limit 1");
 						if(pg_num_rows($result) > 0)
 						{	
                             $response["resultado"] = array();
@@ -886,7 +887,7 @@ error_reporting(0);
                             //echo json_encode($response);
                         }
                         
-                        $result = pg_query($conn, "SELECT wcrear_control('1', 'div', 'col-sm-6', '$dependencia1', '', '', '$level', '$perfil1')");
+                        $result = pg_query($conn, "SELECT wcrear_sub_control('1', 'div', 'col-sm-6', '$dependencia1', '', '', '$level', '$perfil1', '$id_componente1')");
                         if(pg_num_rows($result) > 0)
                         {	
                             $response["resultado"] = array();
@@ -899,9 +900,9 @@ error_reporting(0);
                             $response["success"] = true;
                             $response["message"] = "Existen registros.";
                             //echo json_encode($response);
-                            $dependencia = $response["resultado"][0]["wcrear_control"];
-                            $result1 = pg_query($conn, "SELECT wcrear_control('1', 'p', '', '$dependencia', 'Lorem ipsum Pregunta', '', '1', '$perfil1')");
-                            $result1 = pg_query($conn, "SELECT wcrear_control('1', 'div', 'form-group clearfix', '$dependencia', '', '', '2', '$perfil1')");
+                            $dependencia = $response["resultado"][0]["wcrear_sub_control"];
+                            $result1 = pg_query($conn, "SELECT wcrear_sub_control('1', 'p', '', '$dependencia', 'Lorem ipsum Pregunta', '', '1', '$perfil1', '$id_componente1')");
+                            $result1 = pg_query($conn, "SELECT wcrear_sub_control('1', 'div', 'form-group clearfix', '$dependencia', '', '', '2', '$perfil1', '$id_componente1')");
                             if(pg_num_rows($result1) > 0)
                             {	
                                 $response["resultado"] = array();
@@ -913,12 +914,12 @@ error_reporting(0);
                                 }
                                 $response["success"] = true;
                                 $response["message"] = "Existen registros.";
-                                $dependencia = $response["resultado"][0]["wcrear_control"];
-                                $result1 = pg_query($conn, "SELECT wcrear_control('1', 'p', '', '$dependencia', 'Fecha inicial', '', '2', '$perfil1')");
-                                $result1 = pg_query($conn, "SELECT wcrear_control('1', 'input', 'form-control', '$dependencia', '', 'date', '3', '$perfil1')");
-                                $result1 = pg_query($conn, "SELECT wcrear_control('1', 'p', '', '$dependencia', 'Fecha final', '', '4', '$perfil1')");
-                                $result1 = pg_query($conn, "SELECT wcrear_control('1', 'input', 'form-control', '$dependencia', '', 'date', '5', '$perfil1')");
-                                $result1 = pg_query($conn, "SELECT wcrear_control('1', 'div', 'icheck-primary d-inline', '$dependencia', '', '', '1', '$perfil1')");
+                                $dependencia = $response["resultado"][0]["wcrear_sub_control"];
+                                $result1 = pg_query($conn, "SELECT wcrear_sub_control('1', 'p', '', '$dependencia', 'Fecha inicial', '', '2', '$perfil1', '$id_componente1')");
+                                $result1 = pg_query($conn, "SELECT wcrear_sub_control('1', 'input', 'form-control', '$dependencia', '', 'date', '3', '$perfil1', '$id_componente1')");
+                                $result1 = pg_query($conn, "SELECT wcrear_sub_control('1', 'p', '', '$dependencia', 'Fecha final', '', '4', '$perfil1', '$id_componente1')");
+                                $result1 = pg_query($conn, "SELECT wcrear_sub_control('1', 'input', 'form-control', '$dependencia', '', 'date', '5', '$perfil1', '$id_componente1')");
+                                $result1 = pg_query($conn, "SELECT wcrear_sub_control('1', 'div', 'icheck-primary d-inline', '$dependencia', '', '', '1', '$perfil1', '$id_componente1')");
                                 if(pg_num_rows($result1) > 0)
                                 {	
                                     $response["resultado"] = array();
@@ -930,10 +931,10 @@ error_reporting(0);
                                     }
                                     $response["success"] = true;
                                     $response["message"] = "Existen registros.";
-                                    $dependencia = $response["resultado"][0]["wcrear_control"];
-                                    $result1 = pg_query($conn, "SELECT wcrear_control('1', 'input', '', '$dependencia', 'CUMPLE', 'radio', '1', '$perfil1')");
-                                    $result1 = pg_query($conn, "SELECT wcrear_control('1', 'input', '', '$dependencia', 'NO CUMPLE', 'radio', '2', '$perfil1')");
-                                    $result1 = pg_query($conn, "SELECT wcrear_control('1', 'input', '', '$dependencia', 'NO APLICA', 'radio', '3', '$perfil1')");
+                                    $dependencia = $response["resultado"][0]["wcrear_sub_control"];
+                                    $result1 = pg_query($conn, "SELECT wcrear_sub_control('1', 'input', '', '$dependencia', 'CUMPLE', 'radio', '1', '$perfil1', '$id_componente1')");
+                                    $result1 = pg_query($conn, "SELECT wcrear_sub_control('1', 'input', '', '$dependencia', 'NO CUMPLE', 'radio', '2', '$perfil1', '$id_componente1')");
+                                    $result1 = pg_query($conn, "SELECT wcrear_sub_control('1', 'input', '', '$dependencia', 'NO APLICA', 'radio', '3', '$perfil1', '$id_componente1')");
                                     if(pg_num_rows($result1) > 0)
                                     {	
                                         $response["resultado"] = array();
@@ -956,7 +957,7 @@ error_reporting(0);
                         }
 					}else if($codigo == '11'){// PREGUNTA CON FECHA Y CUMPLE NO CUMPLE NO APLICA SIN OBSERVACION
                         $level = 0;
-						$result = pg_query($conn, 	"SELECT ranking+1 as ranking FROM wcomponentehtml WHERE dependencia = $dependencia1 AND perfil = $perfil1 order by ranking desc limit 1");
+						$result = pg_query($conn, 	"SELECT ranking+1 as ranking FROM wsubcomponentehtml WHERE dependencia = $dependencia1 AND perfil = $perfil1 order by ranking desc limit 1");
 						if(pg_num_rows($result) > 0)
 						{	
                             $response["resultado"] = array();
@@ -979,7 +980,7 @@ error_reporting(0);
                             //echo json_encode($response);
                         }
                         
-                        $result = pg_query($conn, "SELECT wcrear_control('1', 'div', 'col-sm-6', '$dependencia1', '', '', '$level', '$perfil1')");
+                        $result = pg_query($conn, "SELECT wcrear_sub_control('1', 'div', 'col-sm-6', '$dependencia1', '', '', '$level', '$perfil1', '$id_componente1')");
                         if(pg_num_rows($result) > 0)
                         {	
                             $response["resultado"] = array();
@@ -992,9 +993,9 @@ error_reporting(0);
                             $response["success"] = true;
                             $response["message"] = "Existen registros.";
                             //echo json_encode($response);
-                            $dependencia = $response["resultado"][0]["wcrear_control"];
-                            $result1 = pg_query($conn, "SELECT wcrear_control('1', 'p', '', '$dependencia', 'Lorem ipsum Pregunta', '', '1', '$perfil1')");
-                            $result1 = pg_query($conn, "SELECT wcrear_control('1', 'div', 'form-group clearfix', '$dependencia', '', '', '2', '$perfil1')");
+                            $dependencia = $response["resultado"][0]["wcrear_sub_control"];
+                            $result1 = pg_query($conn, "SELECT wcrear_sub_control('1', 'p', '', '$dependencia', 'Lorem ipsum Pregunta', '', '1', '$perfil1', '$id_componente1')");
+                            $result1 = pg_query($conn, "SELECT wcrear_sub_control('1', 'div', 'form-group clearfix', '$dependencia', '', '', '2', '$perfil1', '$id_componente1')");
                             if(pg_num_rows($result1) > 0)
                             {	
                                 $response["resultado"] = array();
@@ -1006,10 +1007,10 @@ error_reporting(0);
                                 }
                                 $response["success"] = true;
                                 $response["message"] = "Existen registros.";
-                                $dependencia = $response["resultado"][0]["wcrear_control"];
-                                $result1 = pg_query($conn, "SELECT wcrear_control('1', 'p', '', '$dependencia', 'Fecha inicial', '', '2', '$perfil1')");
-                                $result1 = pg_query($conn, "SELECT wcrear_control('1', 'input', 'form-control', '$dependencia', '', 'date', '3', '$perfil1')");
-                                $result1 = pg_query($conn, "SELECT wcrear_control('1', 'div', 'icheck-primary d-inline', '$dependencia', '', '', '1', '$perfil1')");
+                                $dependencia = $response["resultado"][0]["wcrear_sub_control"];
+                                $result1 = pg_query($conn, "SELECT wcrear_sub_control('1', 'p', '', '$dependencia', 'Fecha inicial', '', '2', '$perfil1', '$id_componente1')");
+                                $result1 = pg_query($conn, "SELECT wcrear_sub_control('1', 'input', 'form-control', '$dependencia', '', 'date', '3', '$perfil1', '$id_componente1')");
+                                $result1 = pg_query($conn, "SELECT wcrear_sub_control('1', 'div', 'icheck-primary d-inline', '$dependencia', '', '', '1', '$perfil1', '$id_componente1')");
                                 if(pg_num_rows($result1) > 0)
                                 {	
                                     $response["resultado"] = array();
@@ -1021,10 +1022,10 @@ error_reporting(0);
                                     }
                                     $response["success"] = true;
                                     $response["message"] = "Existen registros.";
-                                    $dependencia = $response["resultado"][0]["wcrear_control"];
-                                    $result1 = pg_query($conn, "SELECT wcrear_control('1', 'input', '', '$dependencia', 'CUMPLE', 'radio', '1', '$perfil1')");
-                                    $result1 = pg_query($conn, "SELECT wcrear_control('1', 'input', '', '$dependencia', 'NO CUMPLE', 'radio', '2', '$perfil1')");
-                                    $result1 = pg_query($conn, "SELECT wcrear_control('1', 'input', '', '$dependencia', 'NO APLICA', 'radio', '3', '$perfil1')");
+                                    $dependencia = $response["resultado"][0]["wcrear_sub_control"];
+                                    $result1 = pg_query($conn, "SELECT wcrear_sub_control('1', 'input', '', '$dependencia', 'CUMPLE', 'radio', '1', '$perfil1', '$id_componente1')");
+                                    $result1 = pg_query($conn, "SELECT wcrear_sub_control('1', 'input', '', '$dependencia', 'NO CUMPLE', 'radio', '2', '$perfil1', '$id_componente1')");
+                                    $result1 = pg_query($conn, "SELECT wcrear_sub_control('1', 'input', '', '$dependencia', 'NO APLICA', 'radio', '3', '$perfil1', '$id_componente1')");
                                     if(pg_num_rows($result1) > 0)
                                     {	
                                         $response["resultado"] = array();
