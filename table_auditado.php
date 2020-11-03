@@ -23,8 +23,8 @@ $table = <<<EOT
     eps,
     servicio,
     cama,
-    to_char(fechacrea, 'YYYY-MM-DD HH24:MM') as fechacrea, 
-    (SELECT to_char(MAX(fechacrea), 'YYYY-MM-DD HH24:MM') FROM wrespuestas WHERE wrespuestas.cod_audi = wauditorias.cod_audi AND wauditorias.terminado = true ) as fecha_final,
+    to_char(fechacrea, 'YYYY-MI-DD HH24:MI:SS') as fechacrea, 
+    (SELECT to_char(MAX(fechacrea), 'YYYY-MM-DD HH24:MI:SS') FROM wrespuestas WHERE perfil = $perfil AND wrespuestas.cod_audi = wauditorias.cod_audi AND wauditorias.terminado = true ) as fecha_final,
         (SELECT count(*) FROM
         (SELECT *
         FROM wauditorias 

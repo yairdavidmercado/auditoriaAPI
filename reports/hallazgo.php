@@ -38,9 +38,11 @@ error_reporting(0);
                           (SELECT wusuarios.nombre FROM wusuarios INNER JOIN wdevoluciones ON wusuarios.cod_usua = wdevoluciones.cod_crea 
                           WHERE wdevoluciones.cod_audi = $cod_audi
                           ORDER BY consec DESC LIMIT 1) AS autor,
-                          (SELECT SUBSTRING(wauditorias.fechacrea::text FROM 0 FOR 11) AS fecha_solicitud FROM wauditorias WHERE cod_audi = $cod_audi limit 1),
-                          (SELECT to_char(wauditorias.fechacrea, 'HH:MI:SS am') AS hora_creacion FROM wauditorias WHERE cod_audi = $cod_audi limit 1),
-                          wvalidar_hallazgo(1, $cod_audi, $perfil,wcomponentehtml.id) as hallazgo  
+                          (SELECT to_char(wauditorias.fechacrea, 'YYYY-MM-DD') AS fecha_solicitud FROM wauditorias WHERE perfil = $perfil AND cod_audi = $cod_audi limit 1),
+                                      (SELECT to_char(wauditorias.fechacrea, 'HH24:MI:SS') AS hora_creacion FROM wauditorias WHERE perfil = $perfil AND cod_audi = $cod_audi limit 1),
+                          (SELECT to_char(MAX(fechacrea), 'YYYY-MM-DD') FROM wrespuestas WHERE perfil = $perfil AND wrespuestas.cod_audi = $cod_audi LIMIT 1 ) as fecha_final,
+                          (SELECT to_char(MAX(fechacrea), 'HH24:MI:SS') FROM wrespuestas WHERE perfil = $perfil AND wrespuestas.cod_audi = $cod_audi LIMIT 1 ) as hora_final,
+                          wvalidar_hallazgo(1, $cod_audi, $perfil, wcomponentehtml.id) as hallazgo  
                           FROM wcomponentehtml 
                                     WHERE perfil = $perfil 
                                     order by 4,7");
@@ -75,6 +77,9 @@ error_reporting(0);
                             $nom_perfil = $response["resultado"][0]["nom_auditoria"];
                             $fecha_solicitud = $response["resultado"][0]["fecha_solicitud"];
                             $hora = $response["resultado"][0]["hora_creacion"];
+
+                            $fecha_final = $response["resultado"][0]["fecha_final"];
+                            $hora_final = $response["resultado"][0]["hora_final"];
 
                             $autor = $response["resultado"][0]["autor"];
                             $responsable = $response["resultado"][0]["responsable"];
@@ -814,7 +819,10 @@ $info_paciente = '<div style="font-size:9px; margin-left:-12px">
                 <td style="width:300px; text-align:right;">
                   <span style="font-size:11px"><b>RESULTADO DE AUDITORIA No. '.$cod_audi.'</b></span>
                   <br>
-                  <span style="font-size:9px;">'.obtenerFechaEnLetra($fecha_solicitud).' - '.$hora.'</span>
+                  <br>
+                  <span style="font-size:9px;"><b>Inicio</b>: '.obtenerFechaEnLetra($fecha_solicitud).' - '.$hora.'</span>
+                  <br>
+                  <span style="font-size:9px;"><b>Final</b>: '.obtenerFechaEnLetra($fecha_final).' - '.$hora_final.'</span>
                 </td>
               </tr>
             </table>';
