@@ -112,6 +112,27 @@ error_reporting(0);
 								// echo no users JSON
 								echo json_encode($response);
 						}
+					}else if($codigo == '5'){
+						$result = pg_query($conn, 	"SELECT wguardar_actualizar('4', '$parametro2', '$parametro', '$cod_admi', '$comentario', '$cod_usua');");
+						if(pg_num_rows($result) > 0)
+						{	
+													$response["resultado"] = array();
+													while ($row = pg_fetch_array($result)) {
+													$datos = array();
+														
+														// push single product into final response array
+														array_push($response["resultado"], $row);
+													}
+													$response["success"] = true;
+													$response["message"] = "Exitoso.";
+													echo json_encode($response);
+
+						}else{
+								$response["success"] = false;
+								$response["message"] = "El usuario o contraseña no coincide.";
+								// echo no users JSON
+								echo json_encode($response);
+						}
 					}			
 				}
 				else

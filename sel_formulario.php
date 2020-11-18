@@ -25,11 +25,14 @@ error_reporting(0);
                                                 wverificar_respuesta(wcomponentehtml.id, $cod_audi) as respuesta,
                                                 (select anulado from wauditorias WHERE cod_audi = $cod_audi and perfil = wcomponentehtml.perfil limit 1 ) as anulado,
                                                 (select terminado from wauditorias WHERE cod_audi = $cod_audi and perfil = wcomponentehtml.perfil limit 1 ) as terminado,
+                                                (select tipo from wauditorias WHERE cod_audi = $cod_audi and perfil = wcomponentehtml.perfil limit 1 ) as tipo,
                                                 (select id_componente from wsubcomponentehtml 
                                                 WHERE wcomponentehtml.id = wsubcomponentehtml.id_componente 
                                                 and wsubcomponentehtml.perfil = wsubcomponentehtml.perfil 
                                                 and wsubcomponentehtml.estado = true limit 1 ) as id_especial,
-                                                 wverificacion_finalizacion('1','$cod_admi', '0', '$parametro', 'FINALIZADO') as finalizado 
+                                                 wverificacion_finalizacion('1','$cod_admi', '0', '$parametro', 'FINALIZADO') as finalizado,
+                                                (SELECT fecha_ini::date||'T'||fecha_ini::timestamp::time FROM wfechas_auditoria WHERE cod_audi = $cod_audi AND perfil = $parametro ) AS fecha_ini,
+                                                (SELECT fecha_fin::date||'T'||fecha_fin::timestamp::time FROM wfechas_auditoria WHERE cod_audi = $cod_audi AND perfil = $parametro ) AS fecha_fin
                                                 FROM wcomponentehtml 
                                                 WHERE perfil = $parametro 
                                                 and estado = true
@@ -51,7 +54,7 @@ error_reporting(0);
                         $data = $response["resultado"];
                         for ($x = 0; $x < count($data); $x++) {
                             if ($data[$x]["dependencia"] == 0) {
-                                $valor .= '{"id":"'.$data[$x]["id"].'","etiqueta":"'.$data[$x]["etiqueta"].'","class":"'.$data[$x]["clase"].'","ultimo_ranking":"'.$data[$x]["ranking"].'","finalizado":"'.$data[$x]["finalizado"].'","terminado":"'.$data[$x]["terminado"].'","anulado":"'.$data[$x]["anulado"].'","respuesta":"'.$data[$x]["respuesta"].'","id_especial":"'.$data[$x]["id_especial"].'", "child": ['.childrens($data[$x]["id"], $data ).']},';
+                                $valor .= '{"id":"'.$data[$x]["id"].'","etiqueta":"'.$data[$x]["etiqueta"].'","class":"'.$data[$x]["clase"].'","ultimo_ranking":"'.$data[$x]["ranking"].'","finalizado":"'.$data[$x]["finalizado"].'","terminado":"'.$data[$x]["terminado"].'","anulado":"'.$data[$x]["anulado"].'","tipo":"'.$data[$x]["tipo"].'","respuesta":"'.$data[$x]["respuesta"].'","id_especial":"'.$data[$x]["id_especial"].'","fecha_ini":"'.$data[$x]["fecha_ini"].'","fecha_fin":"'.$data[$x]["fecha_fin"].'", "child": ['.childrens($data[$x]["id"], $data ).']},';
                             }
                             
                         }

@@ -34,15 +34,25 @@ error_reporting(0);
                           (SELECT descripcion FROM witem_menu WHERE id = wcomponentehtml.perfil limit 1) as nom_auditoria,
                           (SELECT wusuarios.nombre FROM wusuarios INNER JOIN wdevoluciones ON wusuarios.cod_usua = wdevoluciones.cod_usua 
                           WHERE wdevoluciones.cod_audi = $cod_audi
+                          AND wdevoluciones.perfil::integer = $perfil
                           ORDER BY consec DESC LIMIT 1) AS responsable,
                           (SELECT wusuarios.nombre FROM wusuarios INNER JOIN wdevoluciones ON wusuarios.cod_usua = wdevoluciones.cod_crea 
                           WHERE wdevoluciones.cod_audi = $cod_audi
+                          AND wdevoluciones.perfil::integer = $perfil
                           ORDER BY consec DESC LIMIT 1) AS autor,
-                          (SELECT to_char(wauditorias.fechacrea, 'YYYY-MM-DD') AS fecha_solicitud FROM wauditorias WHERE perfil = $perfil AND cod_audi = $cod_audi limit 1),
-                                      (SELECT to_char(wauditorias.fechacrea, 'HH24:MI:SS') AS hora_creacion FROM wauditorias WHERE perfil = $perfil AND cod_audi = $cod_audi limit 1),
-                          (SELECT to_char(MAX(fechacrea), 'YYYY-MM-DD') FROM wrespuestas WHERE perfil = $perfil AND wrespuestas.cod_audi = $cod_audi LIMIT 1 ) as fecha_final,
-                          (SELECT to_char(MAX(fechacrea), 'HH24:MI:SS') FROM wrespuestas WHERE perfil = $perfil AND wrespuestas.cod_audi = $cod_audi LIMIT 1 ) as hora_final,
-                          wvalidar_hallazgo(1, $cod_audi, $perfil, wcomponentehtml.id) as hallazgo  
+                          -- (SELECT to_char(wauditorias.fechacrea, 'YYYY-MM-DD') AS fecha_solicitud FROM wauditorias WHERE perfil = $perfil AND cod_audi = $cod_audi limit 1),
+                          -- (SELECT to_char(wauditorias.fechacrea, 'HH24:MI:SS') AS hora_creacion FROM wauditorias WHERE perfil = $perfil AND cod_audi = $cod_audi limit 1),
+                          (SELECT anulado FROM wauditorias WHERE perfil = $perfil AND cod_audi = $cod_audi limit 1),
+                          (SELECT terminado FROM wauditorias WHERE perfil = $perfil AND cod_audi = $cod_audi limit 1),
+                          (SELECT to_char(fecha_ini, 'YYYY-MM-DD') FROM wfechas_auditoria WHERE cod_audi = $cod_audi AND perfil = $perfil ) AS fecha_solicitud,
+                          (SELECT to_char(fecha_ini, 'HH24:MI:SS') FROM wfechas_auditoria WHERE cod_audi = $cod_audi AND perfil = $perfil ) AS hora_creacion,
+                          (SELECT to_char(fecha_fin, 'YYYY-MM-DD') FROM wfechas_auditoria WHERE cod_audi = $cod_audi AND perfil = $perfil ) AS fecha_final,
+                          (SELECT to_char(fecha_fin, 'HH24:MI:SS') FROM wfechas_auditoria WHERE cod_audi = $cod_audi AND perfil = $perfil ) AS hora_final,
+                          -- (SELECT to_char(MAX(fechacrea), 'YYYY-MM-DD') FROM wrespuestas WHERE perfil = $perfil AND wrespuestas.cod_audi = $cod_audi LIMIT 1 ) as fecha_final,
+                          -- (SELECT to_char(MAX(fechacrea), 'HH24:MI:SS') FROM wrespuestas WHERE perfil = $perfil AND wrespuestas.cod_audi = $cod_audi LIMIT 1 ) as hora_final,
+                          wvalidar_hallazgo(1, $cod_audi, $perfil, wcomponentehtml.id) as hallazgo,
+                          (SELECT (SELECT nombre FROM wtipo_auditoria WHERE wtipo_auditoria.id = wauditorias.tipo limit 1)  FROM wauditorias WHERE perfil = $perfil AND wauditorias.cod_audi = $cod_audi LIMIT 1 ) as tipo_auditoria,
+                          (SELECT cod_audi FROM wfinalizacion_auditoria WHERE perfil::integer = $perfil AND cod_audi =  $cod_audi AND tipo = 'FINALIZADO'  LIMIT 1 ) as estado_auditoria  
                           FROM wcomponentehtml 
                                     WHERE perfil = $perfil 
                                     order by 4,7");
@@ -80,6 +90,13 @@ error_reporting(0);
 
                             $fecha_final = $response["resultado"][0]["fecha_final"];
                             $hora_final = $response["resultado"][0]["hora_final"];
+
+                            $anulado = $response["resultado"][0]["anulado"];
+                            $terminado = $response["resultado"][0]["terminado"];
+
+                            $tipo_auditoria = $response["resultado"][0]["tipo_auditoria"];
+
+                            $estado_auditoria = $response["resultado"][0]["estado_auditoria"];
 
                             $autor = $response["resultado"][0]["autor"];
                             $responsable = $response["resultado"][0]["responsable"];
@@ -779,6 +796,21 @@ $info_paciente = '<div style="font-size:9px; margin-left:-12px">
 
 </div>';
 
+$estadoAuditoria = '';
+
+if ($terminado == 't') {
+  $estadoAuditoria = '<span style="color:blue">AUDITORÍA TERMINADA</span>';
+}else {
+  $estadoAuditoria = '<span style="color:orange">AUDITORÍA EN CURSO</span>';
+}
+
+if ($estado_auditoria == $cod_audi) {
+  $estadoAuditoria = '<span style="color:green">AUDITORÍA FINALIZADA</span>';
+}
+
+if ($anulado == 't') {
+  $estadoAuditoria = '<span style="color:red">AUDITORÍA ANULADOA</span>';
+}
   $header = '<table border="0" style="width:100%; font-size:9px">
               <tr>
                 <td style="width:100px;"  rowspan="2">
@@ -819,10 +851,13 @@ $info_paciente = '<div style="font-size:9px; margin-left:-12px">
                 <td style="width:300px; text-align:right;">
                   <span style="font-size:11px"><b>RESULTADO DE AUDITORIA No. '.$cod_audi.'</b></span>
                   <br>
+                  <span style="font-size:9px;"><b>Tipo de auditoría</b>: '.$tipo_auditoria.'</span>
                   <br>
                   <span style="font-size:9px;"><b>Inicio</b>: '.obtenerFechaEnLetra($fecha_solicitud).' - '.$hora.'</span>
                   <br>
                   <span style="font-size:9px;"><b>Final</b>: '.obtenerFechaEnLetra($fecha_final).' - '.$hora_final.'</span>
+                  <br>
+                  '.$estadoAuditoria.'
                 </td>
               </tr>
             </table>';
